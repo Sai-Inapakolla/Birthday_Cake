@@ -1,236 +1,194 @@
-* {
+/* Reset & basic setup */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-:root {
-  --tongue: #c12115;
-  --pupil: #fff;
-  --icing: #f2f2f2;
-  --stroke: #1a1a1a;
-}
-
 body {
-  --frosting: hsl(var(--frosting-hue, 0), 100%, 55%);
-  --lightness: 50;
-  --flame: 0;
-  --glow-hue: 40;
+  margin: 0;
+  background: hsl(var(--frosting-hue, 30), var(--glow-saturation, 50%), var(--glow-lightness, 35%));
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --frosting-hue: 30;
   --glow-saturation: 50;
   --glow-lightness: 35;
   --glow-alpha: 0.4;
   --transparency-alpha: 0;
-  --glow: hsla(var(--glow-hue), calc(var(--glow-saturation) * 1%), calc(var(--glow-lightness) * 1%), var(--glow-alpha));
-  --transparent: hsla(0, 0%, 0%, var(--transparency-alpha));
+  --flame: 0;
+  --lightness: 50;
+  --glow-saturation: 50;
+  --glow-lightness: 35;
+  --glow-alpha: 0.4;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease;
   display: flex;
-  overflow: hidden;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: hsl(180, 30%, calc(var(--lightness, 50) * 1%));
-  margin: 0;
-  padding: 0;
+  padding: 1rem;
 }
 
-.whitespace {
-  width: 7px;
-}
-
+/* Birthday button container */
 .birthday-button {
   position: relative;
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  cursor: pointer;
-}
-
-.birthday-button__text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-family: sans-serif;
-  font-weight: bold;
-  padding: 0 10px;
-}
-
-.birthday-button__text .char {
   display: inline-block;
-  color: hsl(var(--hue, 0), calc(var(--char-sat, 0) * 1%), calc(var(--char-light, 0) * 1%));
+  background: hsl(var(--frosting-hue), 70%, 80%);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  user-select: none;
+  transform-origin: center;
+  transform: scale(0.6);
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  margin-bottom: 2rem;
 }
 
-.birthday-button:before {
-  content: '';
-  position: absolute;
-  height: 240px;
-  width: 240px;
-  background: radial-gradient(var(--glow), var(--transparent) 30%), radial-gradient(var(--glow), var(--transparent) 50%);
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -70%) scale(calc(var(--flame) * 3));
-  z-index: 2;
-  filter: blur(15px);
-  opacity: var(--flame);
-}
-
-.birthday-button:after {
-  content: '';
-  height: 30px;
-  width: 100%;
-  max-width: 400px;
-  filter: blur(15px);
-  position: absolute;
-  background: radial-gradient(var(--glow), var(--transparent) 20%), radial-gradient(var(--glow), var(--transparent));
-  top: 100%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(calc(var(--flame) * 1));
-  opacity: var(--flame);
+/* On bigger screens, scale up the button */
+@media (min-width: 768px) {
+  .birthday-button {
+    transform: scale(1);
+  }
 }
 
 .birthday-button__button {
-  width: 100%;
-  max-width: 240px;
-  height: auto;
-  aspect-ratio: 2.4 / 1;
-  position: relative;
-  border: 0;
-  background: var(--icing);
-  border-radius: 14px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: none;
+  border: none;
+  color: hsl(var(--frosting-hue), 50%, 30%);
   cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.25s ease;
+  outline-offset: 3px;
+  outline-color: transparent;
 }
 
+.birthday-button__button:focus,
+.birthday-button__button:hover:not(:disabled) {
+  background-color: hsl(var(--frosting-hue), 80%, 90%);
+  outline-color: hsl(var(--frosting-hue), 70%, 50%);
+}
+
+.birthday-button__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Cake container */
 .birthday-button__cake {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 100%;
-  max-width: 290px;
+  position: relative;
+  width: 300px;
+  max-width: 90vw;
+  height: 320px;
+  margin: 0 auto;
   display: none;
+  user-select: none;
 }
 
-.cake__eye-body {
-  fill: var(--stroke);
-}
-
-.cake__eye-pupil {
-  fill: var(--pupil);
-}
-
-.cake__tongue {
-  fill: var(--tongue);
-}
-
-.cake__mouth-opening {
-  fill: var(--stroke);
-  stroke: var(--stroke);
-}
-
-.cake__sprinkle {
-  --sprinkle: hsl(var(--sprinkle-hue, 0), 100%, 75%);
-  fill: var(--sprinkle);
-}
-
-.cake__frosting--start,
-.cake__frosting--duplicate {
-  fill: var(--frosting);
-}
-
-.candle__flame {
-  opacity: var(--flame, 0);
-}
-
-.candle__flame-outer {
-  fill: #ff711f;
-}
-
-.candle__flame-inner {
-  fill: #edca1d;
-}
-
-.face__stroke {
-  stroke: var(--stroke);
-}
-
-.cake__candle:nth-of-type(1),
-.cake__candle:nth-of-type(2),
-.cake__candle:nth-of-type(3) {
-  --flame: 0;
-}
-
-label {
-  height: 44px;
-  width: 44px;
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  cursor: pointer;
-}
-
-label > svg {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-
-label path {
-  fill: #476b6b;
-}
-
-label svg:nth-of-type(1) {
-  display: none;
-}
-
-[type='checkbox'] {
-  height: 0;
-  width: 0;
-  position: absolute;
-  top: 0;
-  left: 100%;
-}
-
-:checked ~ label svg:nth-of-type(1) {
+/* Show cake when active */
+.birthday-button__cake[style*="block"] {
   display: block;
 }
 
-:checked ~ label svg:nth-of-type(2) {
+/* Cake parts */
+.cake__frosting--start,
+.cake__frosting--end,
+.cake__frosting--duplicate,
+.cake__sprinkles--initial,
+.cake__sprinkles--duplicate {
+  fill: hsl(var(--frosting-hue), 70%, 90%);
+  transition: fill 0.3s ease;
+}
+
+/* Sprinkles */
+.cake__sprinkle {
+  fill: hsl(var(--sprinkle-hue, 0), 80%, 65%);
+  transform-origin: 50% 50%;
+  scale: 0;
+  transition: fill 0.3s ease;
+}
+
+/* Frosting patch */
+.cake__frosting-patch {
   display: none;
 }
 
-/* ✅ Responsive Styles for Mobile */
-@media (max-width: 768px) {
-  .birthday-button__button {
+/* Candle */
+.cake__candle {
+  fill: hsl(40, 90%, 75%);
+  transform-origin: 50% 100%;
+  scale-y: 0;
+  transition: transform 0.3s ease;
+}
+
+/* Candle flame outer and inner */
+.candle__flame-outer {
+  fill: hsl(40, 90%, 60%);
+  opacity: var(--flame, 0);
+  transition: opacity 0.3s ease;
+}
+
+.candle__flame-inner {
+  fill: hsl(40, 100%, 85%);
+  opacity: var(--flame, 0);
+  transition: opacity 0.3s ease;
+}
+
+/* Cake face */
+.cake__face {
+  fill: #444;
+  transform: translateX(-110px);
+  transition: transform 0.3s ease;
+}
+
+.cake__face--straining {
+  display: none;
+  fill: #333;
+}
+
+/* Eyes */
+.cake__eyes {
+  fill: #222;
+  transform-origin: 50% 50%;
+}
+
+/* Characters for text animation */
+.char {
+  display: inline-block;
+  --hue: 0;
+  --char-sat: 0;
+  --char-light: 0;
+  color: hsl(var(--hue), var(--char-sat)%, var(--char-light)%);
+  opacity: 1;
+  transition: color 0.3s ease, opacity 0.3s ease;
+  user-select: none;
+}
+
+/* Volume slider styling */
+#volume {
+  width: 150px;
+  margin-top: 1rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .birthday-button__cake {
     width: 90vw;
     height: auto;
-    aspect-ratio: 2.4 / 1;
-    border-radius: 12px;
   }
+  .birthday-button__button {
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
 
-  .birthday-button__text {
-    font-size: 1.2rem;
-    padding: 0 8px;
-  }
-
-  .birthday-button__cake {
-    width: 90%;
-  }
-
-  .birthday-button {
-    transform: none;
-    width: 100%;
-  }
-
-  label {
-    width: 36px;
-    height: 36px;
-    bottom: 0.5rem;
-    right: 0.5rem;
-  }
+/* Light/dark effect */
+body {
+  filter: brightness(calc(var(--lightness) / 100));
+  background-color: hsl(var(--frosting-hue), var(--glow-saturation)%, var(--glow-lightness)%);
+  transition: background-color 0.4s ease, filter 0.4s ease;
 }
